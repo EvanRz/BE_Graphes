@@ -56,7 +56,6 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
         return new Path(graph, arcs);
     }
 
@@ -201,8 +200,20 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        if(this.isEmpty()) {
+        	return true;
+        }else if(this.arcs.size() == 0 ) {
+        	return true;
+        }else {
+        	for(int i=0; i<this.arcs.size()-1; i++) {
+        		Arc a = this.arcs.get(i);
+        		Arc next_a = this.arcs.get(i+1);
+        		if( !(a.getDestination().equals(next_a.getOrigin())) ) {
+        			return false;
+        		}
+        	}
+        	return true;
+        }
     }
 
     /**
@@ -213,8 +224,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float length = 0;
+        for(Arc arc : this.arcs) {
+        	length += arc.getLength();
+        }
+        return length;
     }
 
     /**
