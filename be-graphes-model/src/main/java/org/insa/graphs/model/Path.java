@@ -32,7 +32,7 @@ public class Path {
      *         consecutive nodes in the list are not connected in the graph.
      * 
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
+    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
     	
         List<Arc> arcs = new ArrayList<Arc>();
@@ -80,7 +80,7 @@ public class Path {
      *         consecutive nodes in the list are not connected in the graph.
      * 
      */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
+    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         if(nodes.size()==0) {
