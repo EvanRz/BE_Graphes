@@ -36,19 +36,22 @@ public class Path {
             throws IllegalArgumentException {
     	
         List<Arc> arcs = new ArrayList<Arc>();
+        if(nodes.size()==0) {
+    		return new Path(graph);
+    	}
+    	else if(nodes.size() == 1 ) {
+    		return new Path(graph,nodes.get(0));
+    	}
         for(int i= 0 ;i< nodes.size()-1;i++) {
         	Node n = nodes.get(i);
-        	if(nodes.size() <= 1 ) {
-        		throw new IllegalArgumentException();
-        	}
         	Node next = nodes.get(i+1);
         	Arc link=null;
         	boolean ver = false;
         	double distMin = Double.MAX_VALUE;
         	for(Arc succ: n.getSuccessors()){
         		if(succ.getDestination().equals(next)) {
-        			if(succ.getLength()<=distMin) {
-        				distMin= succ.getLength();
+        			if(succ.getMinimumTravelTime()<=distMin) {
+        				distMin= succ.getMinimumTravelTime();
         				link = succ;
         				ver = true; 
         			}
@@ -80,19 +83,22 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+        if(nodes.size()==0) {
+    		return new Path(graph);
+    	}
+    	else if(nodes.size() == 1 ) {
+    		return new Path(graph,nodes.get(0));
+    	}
         for(int i= 0 ;i< nodes.size()-1;i++) {
         	Node n = nodes.get(i);
-        	if(nodes.size() == 1 ) {
-        		throw new IllegalArgumentException();
-        	}
         	Node next = nodes.get(i+1);
         	Arc link=null;
         	boolean ver = false;
-        	double timeMin = 1.0/0.0;
+        	double timeMin = Double.MAX_VALUE;
         	for(Arc succ: n.getSuccessors()){
         		if(succ.getDestination().equals(next)) {
-        			if(succ.getMinimumTravelTime()<=timeMin) {
-        				timeMin= succ.getMinimumTravelTime();
+        			if(succ.getLength()<=timeMin) {
+        				timeMin= succ.getLength();
         				link = succ;
         				ver = true; 
         			}
@@ -246,11 +252,30 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean resultat = false;
+        int i;
+        List<Arc> Arcs = this.arcs;
+        Arc arc_origine;
+        if(this.isEmpty()) {
+            resultat = true;
+        }
+        else if(this.size() == 1 & this.arcs.size()==0){
+            resultat = true;
+        }
+        else if((this.getArcs().get(0)).getOrigin() == this.origin) {
+            arc_origine = this.arcs.get(0);
+            resultat = true;
+            for(i=1;i<this.arcs.size();i++) {
+                if(arc_origine.getDestination().compareTo(Arcs.get(i).getOrigin()) != 0) {
+                    resultat = false;
+                    break;
+                }
+                arc_origine = Arcs.get(i);
+            }
+        }
+        return resultat;
     }
 
     /**
@@ -258,11 +283,13 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float d=0.0f;
+    	for(Arc a: this.arcs) {
+        	d += a.getLength(); 
+        }
+        return d;
     }
 
     /**
