@@ -3,7 +3,7 @@ import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 
 public class Label implements Comparable<Label> {
-    public int current;
+    public Node current;
     public boolean  mark;
     public double cost;
     public Arc father;
@@ -11,12 +11,13 @@ public class Label implements Comparable<Label> {
     public double getCost(){
         return this.cost;
     }
-    public Label(int Current,Arc father,boolean mark, double cost){
+    public Label(Node Current){
         this.current = Current;
-        this.father = father;
-        this.cost = cost;
+        this.father = null;
+        this.cost = Double.POSITIVE_INFINITY;
         this.mark = false;
     }
+
     public int compareTo(Label l){
         if(this.cost > l.cost){
             return 1;
