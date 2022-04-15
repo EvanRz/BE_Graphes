@@ -196,7 +196,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     /**
      * Creates a multi-lines string representing a tree view of this binary heap.
      * 
-     * @param maxDepth Maximum depth of the tree to display.
+     * @param maxDepth MaElementNotFoundExceptionximum depth of the tree to display.
      * 
      * @return a string containing a tree view of this binary heap.
      */
@@ -208,5 +208,17 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     public String toString() {
         return BinaryHeapFormatter.toStringTree(this, 8);
     }
+    
+    /*public boolean isValid() {
+    	BinaryHeap<E> bh = new BinaryHeap<E>(this);
+    	
+    	for(int i=0; i<bh.size(); i++) {
+    		if(bh.array.get(i).CompareTo(bh.array.get(i+1) < 0){
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }*/
 
 }
