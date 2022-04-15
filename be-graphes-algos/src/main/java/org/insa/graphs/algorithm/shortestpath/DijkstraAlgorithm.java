@@ -65,21 +65,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         bin.insert(listLabel[fils]);
                         
                         
-                    }else {
-                    	        
-                    	bin.remove(listLabel[fils]);
-                    	
-                    	if(listLabel[fils].cost > listLabel[pere].cost + data.getCost(a) ){
-                            listLabel[fils].cost = listLabel[pere].cost + data.getCost(a);
-                            predecessorArcs[fils] = a;
-                            listLabel[fils].father = a;
-                            
-                        } 
-        
-                    	bin.insert(listLabel[fils]);
-                		
-                		  	
-                    	
+                    }else if(listLabel[fils].cost > listLabel[pere].cost + data.getCost(a) ){
+                    	       
+                		bin.remove(listLabel[fils]);
+                        listLabel[fils].cost = listLabel[pere].cost + data.getCost(a);
+                        predecessorArcs[fils] = a;
+                        listLabel[fils].father = a;
+                        bin.insert(listLabel[fils]);
+
                     }
                 	
                 }
