@@ -221,4 +221,20 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     	return true;
     }*/
 
+    public boolean isValid(){
+        boolean verif;
+        if(this.currentSize ==0 ||this.currentSize == 1 ){
+            return true;
+        }
+        else {
+            ArrayList<E> copy = (ArrayList<E>) array.clone();
+            verif =false;
+            for(int i=0; i<=this.currentSize-1;i++ ){
+                verif=copy.get(i).compareTo(copy.get(i+1)) <0;
+            }
+        }
+        return verif;
+
+    }
+
 }
