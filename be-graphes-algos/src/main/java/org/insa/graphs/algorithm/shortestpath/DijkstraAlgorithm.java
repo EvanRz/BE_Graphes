@@ -12,6 +12,8 @@ import java.util.Collections;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+    public Label[] listLabel;
+
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
@@ -26,7 +28,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         //Start Init
         BinaryHeap<Label> bin = new BinaryHeap<>();
-        Label[] listLabel = new Label[graph.size()];
+        this.listLabel = new Label[graph.size()];
         for(Node n:graph.getNodes()){
             listLabel[n.getId()]=(new Label(n));
         }

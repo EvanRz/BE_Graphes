@@ -30,11 +30,7 @@ public class AlgoTest {
     public AlgoTest(String mapName) {
     }
 
-    public void ShortestTest(int idorigin,int iddest){
-            Node origin = this.graph.get(idorigin);
-            Node destination = this.graph.get(iddest);
 
-        }
 
 
 }
