@@ -1,3 +1,5 @@
+
+
 package org.insa.graphs.gui.simple;
 
 
@@ -15,6 +17,7 @@ import java.lang.Double;
 import java.lang.Math;
 
 import org.insa.graphs.algorithm.ArcInspector;
+import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.algorithm.shortestpath.*;
 import org.insa.graphs.gui.drawing.Drawing;
 import org.insa.graphs.gui.drawing.components.BasicDrawing;
@@ -30,9 +33,9 @@ public class Launch {
 
     /**
      * Create a new Drawing inside a JFrame an return it.
-     * 
+     *
      * @return The created drawing.
-     * 
+     *
      * @throws Exception if something wrong happens when creating the graph.
      */
     public static Drawing createDrawing() throws Exception {
@@ -51,12 +54,18 @@ public class Launch {
         });
         return basicDrawing;
     }
-    public static Path ShortestTest(Graph graph,Path path,int idorigin,int iddest,String algo,boolean isTimed){
+    public static Path ShortestTest(Graph graph,int idorigin,int iddest,String algo,boolean isTimed){
         Node origin = graph.get(idorigin);
         Node destination = graph.get(iddest);
-        ArcInspector arcInspector = null;
+        ArcInspector arcInspector;
+
+        if(isTimed) {
+            arcInspector = ArcInspectorFactory.getAllFilters().get(2);
+        }else {
+            arcInspector = ArcInspectorFactory.getAllFilters().get(0);
+        }
+
         ShortestPathSolution sol;
-        boolean isBF = false;
         Path chemin = null;
         ShortestPathData data= new ShortestPathData(graph,origin,destination,arcInspector);
 
@@ -68,24 +77,25 @@ public class Launch {
                 sol =  algorithm.doRun();
                 chemin = sol.getPath();
                 if(isTimed){
-                    if(Double.compare(chemin.getMinimumTravelTime(),algorithm.listLabel[chemin.getDestination().getId()].cost)==0){
+                    if(Math.abs((double)chemin.getMinimumTravelTime() - algorithm.listLabel[chemin.getDestination().getId()].cost) <= 0.01){
                         System.out.println("Cout temporel conforme");
                     }else{
                         System.out.println("Cout temporel incorrect");
+                        System.out.println("cout chemin : " + (double)chemin.getLength() + " cout label : " + algorithm.listLabel[chemin.getDestination().getId()].cost);
                     }
                 }
                 else{
-                    if(Double.compare((double)chemin.getLength(),algorithm.listLabel[chemin.getDestination().getId()].cost)==0){
+                    if( Math.abs((double)chemin.getLength() - algorithm.listLabel[chemin.getDestination().getId()].cost) <= 0.01){
                         System.out.println("Cout spatial conforme");
                     }else{
                         System.out.println("Cout spatial incorrect");
+                        System.out.println("cout chemin : " + (double)chemin.getLength() + " cout label : " + algorithm.listLabel[chemin.getDestination().getId()].cost);
                     }
                 }
                 break;
             case "Astar":
                 break;
             case "BF":
-                isBF = true;
                 BellmanFordAlgorithm BF = new BellmanFordAlgorithm(data);
                 sol =  BF.doRun();
                 chemin = sol.getPath();
@@ -129,21 +139,28 @@ public class Launch {
         // TODO: Create a PathReader.
         final PathReader pathReader = new BinaryPathReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(pathName))));
-;
+        ;
 
         // TODO: Read the path.
-        final Path path = pathReader.readPath(graph);
+        //final Path path = pathReader.readPath(graph);
 
         // TODO: Draw the path.
-        drawing.drawPath(path);
+        Path solutionBF;
+        Path solutionDj;
+        boolean isTime = false;
 
         // Lancement des tests auto
-        Path solutionBF =  ShortestTest(graph,path,13880,32864,"BF",false);
-        Path solutionDj =  ShortestTest(graph,path,13880,32864,"DJ",false);
-        System.out.println(comparePath(solutionBF,solutionDj,false));
+        solutionBF =  ShortestTest(graph,13880,32864,"BF",isTime);
+        solutionDj =  ShortestTest(graph,13880,32864,"DJ",isTime);
+        System.out.println(comparePath(solutionBF,solutionDj,isTime));
 
+        isTime = true;
+        solutionBF =  ShortestTest(graph,13880,32864,"BF",isTime);
+        solutionDj =  ShortestTest(graph,13880,32864,"DJ",isTime);
+        System.out.println(comparePath(solutionBF,solutionDj,isTime));
 
-        
+        drawing.drawPath(solutionBF);
+
     }
 
 }

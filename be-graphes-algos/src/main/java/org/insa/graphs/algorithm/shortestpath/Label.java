@@ -8,10 +8,10 @@ public class Label implements Comparable<Label> {
     public double cost;
     public Arc father;
 
-    public double getCost(){
+    public double getCost() {
         return this.cost;
     }
-    public Label(Node Current){
+    public Label(Node Current) {
         this.current = Current;
         this.father = null;
         this.cost = Double.POSITIVE_INFINITY;
@@ -19,9 +19,9 @@ public class Label implements Comparable<Label> {
     }
 
     public int compareTo(Label l){
-        if(this.cost > l.cost){
+        if(this.getCost() > l.getCost()){
             return 1;
-        }else if(this.cost == l.cost){
+        }else if(this.getCost() == l.getCost()){
             return 0;
         }else {
             return -1;
