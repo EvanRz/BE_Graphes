@@ -3,24 +3,18 @@ package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.model.Node;
 
 public class LabelStar extends Label{
-    public double distance;
-
-    public LabelStar(Node Current) {
+	public double distance;
+	public Node dest;
+	
+    public LabelStar(Node Current, Node Dest) {
         super(Current);
+        this.dest = Dest;
     }
-
-    public double getTotalCost(Node destination){
-        distance = this.current.getPoint().distanceTo(destination.getPoint());
-        return super.getCost()+ distance;
+    
+    @Override
+    public double getTotalCost(){
+        this.distance = this.current.getPoint().distanceTo(this.dest.getPoint());
+        return this.cost + this.distance;
     }
-    public int compareTo(LabelStar l,Node dest){
-        if(this.getTotalCost(dest) > l.getTotalCost(dest)){
-            return 1;
-        }else if(this.getTotalCost(dest) == l.getTotalCost(dest)){
-            return 0;
-        }else {
-            return -1;
-        }
-    }
-
+  
 }

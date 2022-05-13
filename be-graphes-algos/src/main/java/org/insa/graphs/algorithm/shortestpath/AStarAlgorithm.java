@@ -11,106 +11,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
-    public LabelStar[] listLabel;
 
     public AStarAlgorithm(ShortestPathData data) {
         super(data);
 
     }
 
-
-    @Override
-    public ShortestPathSolution doRun() {
-
-        final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
-        Graph graph = data.getGraph();
-        Arc[] predecessorArcs = new Arc[graph.size()];
-
-        //Start Init
-        BinaryHeap<Label> bin = new BinaryHeap<>();
-        this.listLabel = new LabelStar[graph.size()];
+    public void initLabel(ShortestPathData data, Graph graph) {
+    	this.listLabel = new Label[graph.size()];
         for(Node n:graph.getNodes()){
-            listLabel[n.getId()]=(new LabelStar(n));
+            listLabel[n.getId()]=(new LabelStar(n,data.getDestination()));
         }
-        Node origin = data.getOrigin();
-        Node dest = data.getDestination();
-        listLabel[origin.getId()].cost = 0.0 ;
-        bin.insert(listLabel[origin.getId()]);
-
-        // Init Done
-        // Start Traitement
-        notifyOriginProcessed(origin);
-
-        while (!bin.isEmpty()){
-            Label currentLabel = bin.deleteMin();
-            if(currentLabel.current == data.getDestination()) {
-                break;
-            }
-            int pere = currentLabel.current.getId();
-            listLabel[pere].mark=true;
-            notifyNodeMarked(currentLabel.current);
-
-            for(Arc a:currentLabel.current.getSuccessors()){
-
-                if(!data.isAllowed(a)) {
-                    continue;
-                }
-
-                int fils = a.getDestination().getId();
-
-                if(!listLabel[fils].mark){
-                    if(listLabel[fils].cost == Double.POSITIVE_INFINITY) {
-
-                        listLabel[fils].cost = listLabel[pere].getTotalCost(dest) + data.getCost(a);
-                        predecessorArcs[fils] = a;
-                        listLabel[fils].father = a;
-                        notifyNodeReached(a.getDestination());
-                        bin.insert(listLabel[fils]);
-
-
-                    }else if(listLabel[fils].getTotalCost(dest) > listLabel[pere].getTotalCost(dest) + data.getCost(a) ){
-
-                        bin.remove(listLabel[fils]);
-                        listLabel[fils].cost = listLabel[pere].cost + data.getCost(a);
-                        predecessorArcs[fils] = a;
-                        listLabel[fils].father = a;
-                        bin.insert(listLabel[fils]);
-
-                    }
-
-                }
-
-            }
-        }
-
-        // Destination has no predecessor, the solution is infeasible...
-        if (predecessorArcs[data.getDestination().getId()] == null) {
-            solution = new ShortestPathSolution(data, AbstractSolution.Status.INFEASIBLE);
-        }
-        else {
-
-            // The destination has been found, notify the observers.
-            notifyDestinationReached(data.getDestination());
-
-            // Create the path from the array of predecessors...
-            ArrayList<Arc> arcs = new ArrayList<>();
-            Arc arc = predecessorArcs[data.getDestination().getId()];
-            while (arc != null) {
-                arcs.add(arc);
-                arc = predecessorArcs[arc.getOrigin().getId()];
-            }
-
-            // Reverse the path...
-            Collections.reverse(arcs);
-
-            // Create the final solution.
-            solution = new ShortestPathSolution(data, AbstractSolution.Status.OPTIMAL, new Path(graph, arcs));
-        }
-
-        // Traitement Done
-        return solution;
     }
-
+    
 
 }

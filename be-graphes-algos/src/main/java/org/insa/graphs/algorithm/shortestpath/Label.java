@@ -7,10 +7,16 @@ public class Label implements Comparable<Label> {
     public boolean  mark;
     public double cost;
     public Arc father;
+    
 
     public double getCost() {
         return this.cost;
     }
+    
+    public double getTotalCost() {
+    	return getCost();
+    }
+    
     public Label(Node Current) {
         this.current = Current;
         this.father = null;
@@ -19,9 +25,9 @@ public class Label implements Comparable<Label> {
     }
 
     public int compareTo(Label l){
-        if(this.getCost() > l.getCost()){
+        if(this.getTotalCost() > l.getTotalCost()){
             return 1;
-        }else if(this.getCost() == l.getCost()){
+        }else if(this.getTotalCost() == l.getTotalCost()){
             return 0;
         }else {
             return -1;

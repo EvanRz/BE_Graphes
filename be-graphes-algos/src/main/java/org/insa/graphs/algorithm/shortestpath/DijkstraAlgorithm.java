@@ -17,7 +17,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
+    
+    public void initLabel(ShortestPathData data, Graph graph) {
+    	this.listLabel = new Label[graph.size()];
+        for(Node n:graph.getNodes()){
+            listLabel[n.getId()]=(new Label(n));
+        }
+    }
+    
     @Override
     public ShortestPathSolution doRun() {
     	
@@ -28,10 +35,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         //Start Init
         BinaryHeap<Label> bin = new BinaryHeap<>();
-        this.listLabel = new Label[graph.size()];
-        for(Node n:graph.getNodes()){
-            listLabel[n.getId()]=(new Label(n));
-        }
+        this.initLabel(data, graph);
         Node origin = data.getOrigin();
         listLabel[origin.getId()].cost = 0.0 ;
         bin.insert(listLabel[origin.getId()]);
@@ -67,7 +71,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         bin.insert(listLabel[fils]);
                         
                         
-                    }else if(listLabel[fils].cost > listLabel[pere].cost + data.getCost(a) ){
+                    }else if(listLabel[fils].getTotalCost() > listLabel[pere].getTotalCost() + data.getCost(a) ){
                     	       
                 		bin.remove(listLabel[fils]);
                         listLabel[fils].cost = listLabel[pere].cost + data.getCost(a);
