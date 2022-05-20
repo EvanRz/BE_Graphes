@@ -19,8 +19,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     public void initLabel(ShortestPathData data, Graph graph) {
     	this.listLabel = new Label[graph.size()];
+    	Node d = data.getDestination();
         for(Node n:graph.getNodes()){
-            listLabel[n.getId()]=(new LabelStar(n,data.getDestination()));
+            listLabel[n.getId()]=(new LabelStar(n ,d ,data.getMode(), graph.getGraphInformation().getMaximumSpeed() ) );
         }
     }
     

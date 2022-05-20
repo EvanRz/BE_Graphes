@@ -1,20 +1,24 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import org.insa.graphs.model.Node;
+import org.insa.graphs.algorithm.AbstractInputData;
 
 public class LabelStar extends Label{
-	public double distance;
-	public Node dest;
+	private AbstractInputData.Mode mode;
 	
-    public LabelStar(Node Current, Node Dest) {
+	
+    public LabelStar(Node Current, Node Dest, AbstractInputData.Mode Mode ,double Speed) {
         super(Current);
-        this.dest = Dest;
+        this.effectiveCost = this.current.getPoint().distanceTo(Dest.getPoint());
+        if(Mode == AbstractInputData.Mode.TIME) {
+        	this.effectiveCost = 3.6*this.effectiveCost/Speed;
+        }
+        
     }
     
     @Override
     public double getTotalCost(){
-        this.distance = this.current.getPoint().distanceTo(this.dest.getPoint());
-        return this.cost + this.distance;
+        return this.cost + this.effectiveCost;
     }
   
 }
