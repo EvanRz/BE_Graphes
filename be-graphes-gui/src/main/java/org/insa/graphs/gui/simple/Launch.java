@@ -150,12 +150,12 @@ public class Launch {
         final Drawing drawing = createDrawing();
         drawing.drawGraph(graph);
         
-        int nbTest = 20;
+        int nbTest = 500;
     	int idorigin;
     	int iddest;
     	Path path1;
     	Path path2;
-    	String refAlgo = "BF";
+    	String refAlgo = "DJ";
     	for(int i=1; i<=nbTest;i++) {
     		idorigin = (int) (Math.random()*(graph.size())) ;
     		iddest = (int) (Math.random()*(graph.size())) ;
@@ -169,15 +169,21 @@ public class Launch {
             		drawing.drawPath(path1,Color.GREEN);
             		System.out.println("Test numéro "+i+"/"+nbTest+" valide");
             	}else {
+            		drawing.clearOverlays();
             		System.out.println("Test numéro "+i+"/"+nbTest+" incorrect avec origine "+idorigin+" et destination "+iddest);
             		drawing.drawPath(path1, Color.BLUE);
             		drawing.drawPath(path2, Color.RED);
+            		break;
             	}
         	}else	{
         		System.out.println("pas de chemin possible");
         		System.out.println("Test numéro "+i+"/"+nbTest+" valide");
         	}
         	System.out.println();
+        	
+        	if(i%10 == 0) {
+        		drawing.clearOverlays();
+        	}
     	}
     	
     	
@@ -187,65 +193,12 @@ public class Launch {
 
         // Visit these directory to see the list of available files on Commetud.
         final String mapName = "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/paris.mapgr";
-		/*
-		 * final String pathName =
-		 * "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Paths/path_fr31insa_rangueil_r2.path"
-		 * ;
-		 * 
-		 * // Create a graph reader. final GraphReader reader = new BinaryGraphReader(
-		 * new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-		 * 
-		 * // TODO: Read the graph. final Graph graph = reader.read();
-		 * 
-		 * // Create the drawing: final Drawing drawing = createDrawing();
-		 * 
-		 * // TODO: Draw the graph on the drawing. drawing.drawGraph(graph);
-		 * 
-		 * // TODO: Create a PathReader. final PathReader pathReader = new
-		 * BinaryPathReader( new DataInputStream(new BufferedInputStream(new
-		 * FileInputStream(pathName)))); ;
-		 */
-
-        // TODO: Read the path.
-        //final Path path = pathReader.readPath(graph);
-
-        // TODO: Draw the path.
-        Path solutionBF;
-        Path solutionDJ;
-        Path solutionA;
+        
+        //Temps ou Distance
         boolean isTime = true;
         
-        //100167 et 116585
         test("A*",isTime,mapName);
-        //test("DJ",isTime,mapName);
-        // Lancement des tests auto
-		/*
-		 * solutionBF = ShortestTest(graph,13880,32864,"BF",isTime); solutionDJ =
-		 * ShortestTest(graph,13880,32864,"DJ",isTime);
-		 * System.out.println(comparePath(solutionBF,solutionDJ,isTime));
-		 * System.out.println(graph.size());
-		 * 
-		 * drawing.drawPath(solutionDJ); drawing.drawPath(solutionBF);
-		 * 
-		 * isTime = true; solutionBF = ShortestTest(graph,13880,32864,"BF",isTime);
-		 * solutionDJ = ShortestTest(graph,13880,32864,"DJ",isTime);
-		 * System.out.println(comparePath(solutionBF,solutionDJ,isTime));
-		 * drawing.drawPath(solutionDJ); drawing.drawPath(solutionBF);
-		 */
         
-        /*solutionA =  ShortestTest(graph,13880,32864,"A*",isTime);
-        solutionDJ =  ShortestTest(graph,13880,32864,"DJ",isTime);
-        System.out.println(comparePath(solutionA,solutionDJ,isTime));
-        
-        drawing.drawPath(solutionA);
-        drawing.drawPath(solutionDJ);
-        
-        solutionA =  ShortestTest(graph,7000,14000,"A*",isTime);
-        solutionBF =  ShortestTest(graph,7000,14000,"BF",isTime);
-        System.out.println(comparePath(solutionA,solutionBF,isTime));
-
-        drawing.drawPath(solutionA);
-        drawing.drawPath(solutionBF);*/
 
     }
 
